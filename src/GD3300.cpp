@@ -1,169 +1,169 @@
 /*
- * SerialMP3Player.h - Library for Serial MP3 Player board from Catalex (YX5300 chip)
+ * SerialMP3Player.h - Library for Serial MP3 Player board from Catalex (GD3300 chip)
  * Created by Salvador Rueda Pau, July 23, 2016.
  * License as GPL v3 (http://www.gnu.org/licenses/gpl.html)
  *
  */
 
 #include "Arduino.h"
-#include "YX5300.h"
+#include "GD3300.h"
 
 // Uncomment next line if you are using an Arduino Mega.
 //#define mp3 Serial3    // Connect the MP3 Serial Player to the Arduino MEGA Serial3 (14 TX3 -> RX, 15 RX3 -> TX)
 
-//YX5300::YX5300(Stream &stream){
+//GD3300::GD3300(Stream &stream){
    //SoftwareSerial Serial3 = SoftwareSerial(10, 11);
 //  this->serial = &stream;
   //serial->begin(9600);
 //}
 /*
-YX5300::YX5300(){
+GD3300::GD3300(){
    //SoftwareSerial Serial3 = SoftwareSerial(10, 11);
    Serial3 = new SoftwareSerial(10, 11);
    _showDebugMessages = false;
 }
-YX5300::YX5300(int RX, int TX){
+GD3300::GD3300(int RX, int TX){
    //SoftwareSerial Serial3 = SoftwareSerial(RX, TX);
    Serial3 = new SoftwareSerial(RX, TX);
    _showDebugMessages = false;
 }
 */
-void YX5300::showDebug(bool op){
+void GD3300::showDebug(bool op){
   // showDebug (op) 0:OFF 1:ON
     _showDebugMessages = op;
 }
 
 
-void YX5300::begin(Stream &s){
+void GD3300::begin(Stream &s){
   serial = &s;
 }
 
-//int YX5300::available(){
+//int GD3300::available(){
 //  return serial->available();
 //}
 
-//char YX5300::read(){
+//char GD3300::read(){
 //  return serial->read();
 //}
 
-void YX5300::playNext(){
+void GD3300::playNext(){
   sendCommand(CMD_NEXT);
 }
 
-void YX5300::playPrevious(){
+void GD3300::playPrevious(){
   sendCommand(CMD_PREV);
 }
 
-void YX5300::volUp(){
+void GD3300::volUp(){
    sendCommand(CMD_VOL_UP);
 }
 
-void YX5300::volDown(){
+void GD3300::volDown(){
    sendCommand(CMD_VOL_DOWN);
 }
 
-void YX5300::setVol(byte v){
+void GD3300::setVol(byte v){
    // Set volumen (0-30)
    sendCommand(CMD_SET_VOL, v);
 }
 
-void YX5300::playSL(byte n){
+void GD3300::playSL(byte n){
    // Play single loop n file
    sendCommand(CMD_PLAY_SLOOP, n);
 }
 
-void YX5300::playSL(byte f, byte n){
+void GD3300::playSL(byte f, byte n){
    // Single loop play n file from f folder
    sendCommand(CMD_PLAY_SLOOP, f, n);
 }
 
-void YX5300::play(){
+void GD3300::play(){
    sendCommand(CMD_PLAY);
 }
 
-void YX5300::pause(){
+void GD3300::pause(){
    sendCommand(CMD_PAUSE);
 }
 
-void YX5300::play(byte n){
+void GD3300::play(byte n){
    // n number of the file that must be played.
    // n possible values (1-255)
    sendCommand(CMD_PLAYN, n);
 }
 
-void YX5300::play(byte n, byte vol){
+void GD3300::play(byte n, byte vol){
    // n number of the file that must be played
 
    sendCommand(CMD_PLAY_W_VOL, vol, n);
 }
 
-void YX5300::playF(byte f){
+void GD3300::playF(byte f){
    // Play all files in the f folder
 
    sendCommand(CMD_FOLDER_CYCLE, f, 0);
 }
 
-void YX5300::stop(){
+void GD3300::stop(){
    sendCommand(CMD_STOP_PLAY);
 }
 
-void YX5300::qPlaying(){
+void GD3300::qPlaying(){
   // Ask for the file is playing
    sendCommand(CMD_PLAYING_N);
 }
 
-void YX5300::qStatus(){
+void GD3300::qStatus(){
    // Ask for the status.
    sendCommand(CMD_QUERY_STATUS);
 }
 
-void YX5300::qVol(){
+void GD3300::qVol(){
   // Ask for the volumen
    sendCommand(CMD_QUERY_VOLUME);
 }
 
-void YX5300::qFTracks(){    // !!! Nonsense answer
+void GD3300::qFTracks(){    // !!! Nonsense answer
   // Ask for the number of tracks folders
    sendCommand(CMD_QUERY_FLDR_TRACKS);
 }
 
-void YX5300::qTTracks(){
+void GD3300::qTTracks(){
   // Ask for the total of tracks
    sendCommand(CMD_QUERY_TOT_TRACKS);
 }
 
-void YX5300::qTFolders(){
+void GD3300::qTFolders(){
   // Ask for the number of folders
    sendCommand(CMD_QUERY_FLDR_COUNT);
 }
 
-void YX5300::sleep(){
+void GD3300::sleep(){
   // Send sleep command
   sendCommand(CMD_SLEEP_MODE);
 }
 
-void YX5300::wakeup(){
+void GD3300::wakeup(){
   // Send wake up command
   sendCommand(CMD_WAKE_UP);
 }
 
-void YX5300::reset(){
+void GD3300::reset(){
   // Send reset command
   sendCommand(CMD_RESET);
 }
 
 
 
-void YX5300::sendCommand(byte command){
+void GD3300::sendCommand(byte command){
   sendCommand(command, 0, 0);
 }
 
-void YX5300::sendCommand(byte command, byte dat2){
+void GD3300::sendCommand(byte command, byte dat2){
   sendCommand(command, 0, dat2);
 }
 
 
-void YX5300::sendCommand(byte command, byte dat1, byte dat2){
+void GD3300::sendCommand(byte command, byte dat1, byte dat2){
   byte Send_buf[8] = {0}; // Buffer for Send commands.
   String mp3send = "";
 
@@ -203,7 +203,7 @@ void YX5300::sendCommand(byte command, byte dat1, byte dat2){
 //static uint8_t ansbuf[10] = {0}; // Buffer for the answers.
 uint8_t val;
 
-String YX5300::decodeMP3Answer(){
+String GD3300::decodeMP3Answer(){
  // Response Structure  0x7E 0xFF 0x06 RSP 0x00 0x00 DAT 0xFE 0xBA 0xEF
   //
   // RSP Response code
@@ -287,7 +287,7 @@ String YX5300::decodeMP3Answer(){
   /* a15 a14 a13 a12 a11 a10 a9 a8 a7 a6 a5 a4 a3 a2 a1 a0
   */
 /* Misael Reyes */
-uint16_t YX5300::MP3Answer(){
+uint16_t GD3300::MP3Answer(){
  // Response Structure  0x7E 0xFF 0x06 RSP 0x00 0x00 DAT 0xFE 0xBA 0xEF
   //
   // RSP Response code
@@ -354,6 +354,8 @@ uint16_t YX5300::MP3Answer(){
       break;
 
     case 0x48://" -> File count: "
+    decodedMP3Answer = ansbuf[6];
+    /*
       switch(ansbuf[6]){
         case 0: decodedMP3Answer = 0x06;break;//|= (1<<5);                              break;
         case 1: decodedMP3Answer = 0x16;break;//|= (1<<5) | (1<<13);                    break;
@@ -376,7 +378,7 @@ uint16_t YX5300::MP3Answer(){
 		case 18: decodedMP3Answer = 0x0126;break;//|= (1<<5) | (1<<14) | (1<<16);         break;
 		case 19: decodedMP3Answer = 0x0136;break;//|= (1<<5) | (1<<14) | (1<<16);         break;
 		case 20: decodedMP3Answer = 0x0146;break;//|= (1<<5) | (1<<14) | (1<<16);         break;
-		}
+		}*/
       break;
 
 
@@ -398,6 +400,8 @@ uint16_t YX5300::MP3Answer(){
       break;
 
     case 0x4E: //" -> Folder file count: "
+    decodedMP3Answer = ansbuf[6];
+    /*
       switch(ansbuf[6]){
         case 0: decodedMP3Answer = 0x08;break;//|= (1<<5);                              break;
         case 1: decodedMP3Answer = 0x18;break;//|= (1<<5) | (1<<13);                    break;
@@ -411,11 +415,12 @@ uint16_t YX5300::MP3Answer(){
 		case 9: decodedMP3Answer = 0x0098;break;//|= (1<<5) | (1<<13) | (1<<16);          break;
 		case 10: decodedMP3Answer = 0x00A8;break;//|= (1<<5) | (1<<14) | (1<<16);         break;
 		
-      }
+      }*/
       break;
 
     case 0x4F://" -> Folder count: "
-	
+    decodedMP3Answer = ansbuf[6];
+	/*
       switch(ansbuf[6]){
         case 0: decodedMP3Answer = 0x09;break;//|= (1<<5);                              break;
         case 1: decodedMP3Answer = 0x19;break;//|= (1<<5) | (1<<13);                    break;
@@ -428,7 +433,7 @@ uint16_t YX5300::MP3Answer(){
 		case 8: decodedMP3Answer = 0x0089;break;//|= (1<<5) | (1<<16);                    break;
 		case 9: decodedMP3Answer = 0x0099;break;//|= (1<<5) | (1<<13) | (1<<16);          break;
 		case 10: decodedMP3Answer = 0x00A9;break;//|= (1<<5) | (1<<14) | (1<<16);         break;
-		}
+		}*/
       break;
      }
 
@@ -447,7 +452,7 @@ uint16_t YX5300::MP3Answer(){
 /*Return: String                                                                */
 
 
-String YX5300::sbyte2hex(byte b)
+String GD3300::sbyte2hex(byte b)
 {
   String shex;
 
@@ -469,7 +474,7 @@ String YX5300::sbyte2hex(byte b)
 /*Return: String.  the answer                                                   */
 
 
-String YX5300::sanswer(void){
+String GD3300::sanswer(void){
   // Response Structure  0x7E 0xFF 0x06 RSP 0x00 0x00 DAT 0xFE 0xBA 0xEF
   //
   // RSP Response code

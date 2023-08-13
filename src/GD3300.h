@@ -1,14 +1,14 @@
 /*
- * SerialMP3Player.h - Library for Serial MP3 Player board from Catalex (YX5300 chip)
+ * GD330.h - Library for Audio_trigger board from Proyectil Mx (GD3300 chip)
  * Created by Salvador Rueda Pau, July 23, 2016.
- * License as GPL v3 (http://www.gnu.org/licenses/gpl.html)
+ * Modified by Misael Reyes
+ * 
  */
 
-#ifndef YX5300_h
-#define YX5300_h
+#ifndef GD3300_h
+#define GD3300_h
 
 #include <Arduino.h>
-//#include <SoftwareSerial.h>
 
 #define CMD_NEXT             0X01 // Play next file
 #define CMD_PREV             0X02 // Play previous file
@@ -16,7 +16,7 @@
 #define CMD_VOL_UP           0X04 // Volumen up
 #define CMD_VOL_DOWN         0X05 // Volumen down
 #define CMD_SET_VOL          0X06 // Set Volume (0-30)
-                          // 0x07 // Reserved.
+                          
 #define CMD_PLAY_SLOOP       0X08 // Single loop play.
 
 #define CMD_SEL_DEV          0X09 // Set device. 2 DEV_TF (SD Card)
@@ -27,12 +27,14 @@
 #define CMD_PLAY             0X0D // Play
 #define CMD_PAUSE            0X0E // Pause
 
-//#define CMD_PLAY_F_FILE      0X0F // only avaible for Flash not SD Card.
+#define CMD_PLAY_F_FILE      0X0F // only avaible for Flash not SD Card.
 
 #define CMD_STOP_PLAY        0X16 // Stop
 #define CMD_FOLDER_CYCLE     0X17 // Play all the files in the f folder
 
-//#define CMD_PLAY_SHUFFLE   0x18 // Reserved
+#define CMD_PLAY_SHUFFLE     0x18 //
+
+#define CMD_SET_SPLAY        0x19 // Start up single cycle play [00] close single cycle play [01]
 
 #define CMD_PLAY_W_VOL       0X22 // Play with a volumen
 
@@ -47,20 +49,17 @@
 
 /************ Opitons **************************/
 
-class YX5300{
+class GD3300{
 
    public:
-     //YX5300();
-	 //YX5300(Stream&);
-     //YX5300(int RX, int TX);
+    
 
      void sendCommand(byte command);
      void sendCommand(byte command, byte dat2);
      void sendCommand(byte command, byte dat1, byte dat2);
 
      void begin(Stream&);
-     //int available();
-     //char read();
+     
      String  decodeMP3Answer();
 	 uint16_t MP3Answer();
 
